@@ -11,28 +11,32 @@ import ProjectsPage from "./pages/ProjectsPage";
 import TestsPage from "./pages/TestsPage";
 import DemoPage from "./pages/DemoPage";
 import NotFound from "./pages/NotFound";
+import { useState } from "react";
 
-const queryClient = new QueryClient();
+function App() {
+  // Create a new QueryClient instance inside the component
+  const [queryClient] = useState(() => new QueryClient());
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/tests" element={<TestsPage />} />
-            <Route path="/demo" element={<DemoPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/tests" element={<TestsPage />} />
+              <Route path="/demo" element={<DemoPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
