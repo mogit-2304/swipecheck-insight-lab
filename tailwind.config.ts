@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				swipecheck: {
+					blue: '#3B82F6',
+					teal: '#0EA5E9',
+					light: '#F8FAFC',
+					dark: '#1E293B',
+					success: '#10B981',
+					danger: '#EF4444'
 				}
 			},
 			borderRadius: {
@@ -84,11 +83,26 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'slide-right': {
+					'0%': { transform: 'translateX(0) rotate(0)' },
+					'100%': { transform: 'translateX(200%) rotate(20deg)' }
+				},
+				'slide-left': {
+					'0%': { transform: 'translateX(0) rotate(0)' },
+					'100%': { transform: 'translateX(-200%) rotate(-20deg)' }
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'slide-right': 'slide-right 0.5s forwards',
+				'slide-left': 'slide-left 0.5s forwards',
+				'fade-in': 'fade-in 0.5s ease-out'
 			}
 		}
 	},
