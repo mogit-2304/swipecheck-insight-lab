@@ -40,19 +40,22 @@ const demoCards = [
 
 const DemoPage = () => {
   const [showResults, setShowResults] = useState(false);
-  const [results, setResults] = useState<Record<string, "left" | "right">>({});
+  const [results, setResults] = useState<Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>>({});
   
-  const handleComplete = (swipeResults: Record<string, "left" | "right">) => {
+  const handleComplete = (swipeResults: Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>) => {
     setResults(swipeResults);
     setShowResults(true);
   };
   
   // Process results for the chart
   const chartData = demoCards.map(card => {
+    const result = results[card.id];
     return {
       name: card.title.split(':')[0],
-      likes: results[card.id] === "right" ? 1 : 0,
-      dislikes: results[card.id] === "left" ? 1 : 0
+      likes: result?.direction === "right" ? 1 : 0,
+      dislikes: result?.direction === "left" ? 1 : 0,
+      goahead: result?.direction === "up" ? 1 : 0,
+      dontconsider: result?.direction === "down" ? 1 : 0
     };
   });
 
