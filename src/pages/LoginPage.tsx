@@ -78,7 +78,8 @@ const LoginPage = () => {
       title: "Login successful",
       description: "Welcome to SwipeCheck!",
     });
-    navigate("/dashboard");
+    // Redirect to homepage instead of dashboard
+    navigate("/");
   };
 
   return (

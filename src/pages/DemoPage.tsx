@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import SwipeDeck from "@/components/swipe/SwipeDeck";
@@ -39,6 +40,7 @@ const demoCards = [
 ];
 
 const DemoPage = () => {
+  const { user } = useAuth();
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<Record<string, { direction: "left" | "right", feedback?: string }>>({});
   
@@ -57,19 +59,21 @@ const DemoPage = () => {
     };
   });
 
+  const participantName = user ? (user.isAnonymous ? "Anonymous User" : user.name) : "Guest";
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">SwipeCheck Demo</h1>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">Product Concept Validation</h1>
           <p className="text-muted-foreground">
-            Try out our card swiping interface to see how easy it is to collect feedback
+            Welcome, {participantName}! Please provide your feedback on these product ideas.
           </p>
         </div>
         
         <Card className="mb-8 border shadow-md">
           <CardHeader>
-            <CardTitle>Product Concept Validation</CardTitle>
+            <CardTitle>Swipe to Validate</CardTitle>
             <CardDescription>
               Swipe right if you like the concept, left if you don't. You can also use the buttons below.
             </CardDescription>
@@ -81,9 +85,12 @@ const DemoPage = () => {
               <div className="space-y-6">
                 <h3 className="text-xl font-bold">Your Feedback Results</h3>
                 <TestResultsChart data={chartData} />
-                <div className="flex justify-center">
+                <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
                   <Button onClick={() => setShowResults(false)}>
                     Try Again
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link to="/">Return Home</Link>
                   </Button>
                 </div>
               </div>
@@ -91,12 +98,14 @@ const DemoPage = () => {
           </CardContent>
         </Card>
         
-        <div className="text-center">
-          <p className="mb-4">Ready to create your own validation projects?</p>
-          <Button size="lg" asChild>
-            <Link to="/signup">Get Started Free</Link>
-          </Button>
-        </div>
+        {!user && (
+          <div className="text-center">
+            <p className="mb-4">Ready to create your own validation projects?</p>
+            <Button size="lg" asChild>
+              <Link to="/signup">Get Started Free</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
