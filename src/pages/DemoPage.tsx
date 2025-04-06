@@ -40,9 +40,9 @@ const demoCards = [
 
 const DemoPage = () => {
   const [showResults, setShowResults] = useState(false);
-  const [results, setResults] = useState<Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>>({});
+  const [results, setResults] = useState<Record<string, { direction: "left" | "right", feedback?: string }>>({});
   
-  const handleComplete = (swipeResults: Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>) => {
+  const handleComplete = (swipeResults: Record<string, { direction: "left" | "right", feedback?: string }>) => {
     setResults(swipeResults);
     setShowResults(true);
   };
@@ -53,9 +53,7 @@ const DemoPage = () => {
     return {
       name: card.title.split(':')[0],
       likes: result?.direction === "right" ? 1 : 0,
-      dislikes: result?.direction === "left" ? 1 : 0,
-      goahead: result?.direction === "up" ? 1 : 0,
-      dontconsider: result?.direction === "down" ? 1 : 0
+      dislikes: result?.direction === "left" ? 1 : 0
     };
   });
 

@@ -14,24 +14,22 @@ interface Card {
 
 interface SwipeDeckProps {
   cards: Card[];
-  onComplete: (results: Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>) => void;
+  onComplete: (results: Record<string, { direction: "left" | "right", feedback?: string }>) => void;
 }
 
 const SwipeDeck = ({ cards, onComplete }: SwipeDeckProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [results, setResults] = useState<Record<string, { direction: "left" | "right" | "up" | "down", feedback?: string }>>({});
+  const [results, setResults] = useState<Record<string, { direction: "left" | "right", feedback?: string }>>({});
   const [isComplete, setIsComplete] = useState(false);
   const [showRejectionDialog, setShowRejectionDialog] = useState(false);
   const [currentCardId, setCurrentCardId] = useState<string | null>(null);
 
-  const processSwipe = (id: string, direction: "left" | "right" | "up" | "down", feedback?: string) => {
-    // Record the swipe result
+  const processSwipe = (id: string, direction: "left" | "right", feedback?: string) => {
     setResults(prev => ({
       ...prev,
       [id]: { direction, ...(feedback ? { feedback } : {}) }
     }));
     
-    // Move to the next card or finish if this was the last card
     if (currentIndex < cards.length - 1) {
       setTimeout(() => {
         setCurrentIndex(currentIndex + 1);
@@ -43,15 +41,13 @@ const SwipeDeck = ({ cards, onComplete }: SwipeDeckProps) => {
     }
   };
 
-  const handleSwipe = (id: string, direction: "left" | "right" | "up" | "down") => {
-    // If this is a rejection (left swipe), show the feedback dialog
+  const handleSwipe = (id: string, direction: "left" | "right") => {
     if (direction === "left") {
       setCurrentCardId(id);
       setShowRejectionDialog(true);
       return;
     }
     
-    // Otherwise process the swipe directly
     processSwipe(id, direction);
   };
 
@@ -68,7 +64,7 @@ const SwipeDeck = ({ cards, onComplete }: SwipeDeckProps) => {
     setCurrentCardId(null);
   };
 
-  const handleManualSwipe = (direction: "left" | "right" | "up" | "down") => {
+  const handleManualSwipe = (direction: "left" | "right") => {
     if (currentIndex < cards.length) {
       handleSwipe(cards[currentIndex].id, direction);
     }
@@ -103,47 +99,25 @@ const SwipeDeck = ({ cards, onComplete }: SwipeDeckProps) => {
               />
             )}
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex justify-center gap-4">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="rounded-full p-3" 
-                onClick={() => handleManualSwipe("left")}
-              >
-                <ArrowLeft className="h-6 w-6 text-swipecheck-danger" />
-                <span className="sr-only">Reject</span>
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="rounded-full p-3" 
-                onClick={() => handleManualSwipe("right")}
-              >
-                <ArrowRight className="h-6 w-6 text-swipecheck-success" />
-                <span className="sr-only">Approve</span>
-              </Button>
-            </div>
-            <div className="flex justify-center gap-4">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="rounded-full p-3" 
-                onClick={() => handleManualSwipe("up")}
-              >
-                <ArrowUp className="h-6 w-6 text-blue-600" />
-                <span className="sr-only">Go-ahead</span>
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="rounded-full p-3" 
-                onClick={() => handleManualSwipe("down")}
-              >
-                <ArrowDown className="h-6 w-6 text-amber-600" />
-                <span className="sr-only">Shouldn't Consider</span>
-              </Button>
-            </div>
+          <div className="flex justify-center gap-4">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="rounded-full p-3" 
+              onClick={() => handleManualSwipe("left")}
+            >
+              <ArrowLeft className="h-6 w-6 text-swipecheck-danger" />
+              <span className="sr-only">Reject</span>
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="rounded-full p-3" 
+              onClick={() => handleManualSwipe("right")}
+            >
+              <ArrowRight className="h-6 w-6 text-swipecheck-success" />
+              <span className="sr-only">Approve</span>
+            </Button>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Card {currentIndex + 1} of {cards.length}
